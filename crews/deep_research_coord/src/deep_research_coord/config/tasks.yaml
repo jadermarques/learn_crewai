@@ -1,0 +1,105 @@
+# Define the task to create the research plan.
+# This task involves breaking down the user query into main and secondary topics.
+create_research_plan:
+  description: >
+    Divida a consulta de pesquisa "{user_query}" em tópicos PRINCIPAIS (áreas essenciais) e tópicos SECUNDÁRIOS (áreas de apoio). 
+    Separe e priorize claramente essas categorias para a execução paralela da pesquisa.
+  expected_output: >
+    Um plano de pesquisa com: 1) TÓPICOS PRINCIPAIS: Áreas de pesquisa essenciais
+    para responder à pergunta, 2) TÓPICOS SECUNDÁRIOS: Áreas de pesquisa de apoio que fornecem
+    contexto, 3) Questões-chave para cada categoria de tópico, 4) Prioridades de pesquisa e
+    critérios de sucesso
+  # Set the agent that will perform this task
+  agent: research_planner
+
+
+# Define the task to research main topics.
+research_main_topics:
+  description: >
+    Utilizando o plano de pesquisa, concentre-se nos tópicos PRINCIPAIS e pesquise na internet
+    para coletar informações abrangentes. Verifique as informações em diversas fontes
+    e cite todas as fontes utilizadas.
+  expected_output: >
+    Dados de pesquisa abrangentes para os PRINCIPAIS tópicos, incluindo: 1) Informações detalhadas
+    para cada tópico principal de pesquisa com citações, 2) Principais fatos e estatísticas,
+    3) Perspectivas de múltiplas fontes, 4) Notas sobre a credibilidade das fontes
+  # Set the agent that will perform this task
+  agent: topic_researcher
+  # Set the context for this task
+  context:
+  - create_research_plan
+
+# Define the task to research secondary topics.
+research_secondary_topics:
+  description: >
+    Usando o plano de pesquisa, concentre-se nos tópicos SECUNDÁRIOS e pesquise na internet para coletar informações de apoio. 
+    Verifique as informações em várias fontes e cite todas as fontes utilizadas.
+  expected_output: >
+    Dados de pesquisa abrangentes para tópicos SECUNDÁRIOS, incluindo: 1)
+    Informações de apoio para cada tópico de pesquisa secundária com citações, 2) Contexto
+    fatos e antecedentes, 3) Perspectivas de múltiplas fontes, 4) Notas sobre a credibilidade das fontes
+  # Set the agent that will perform this task
+  agent: topic_researcher
+  # Set the context for this task
+  context:
+  - create_research_plan
+
+
+# Define the task to validate main topics.
+validate_main_topics:
+  description: >
+    Revise todos os dados de pesquisa coletados sobre o tema PRINCIPAL para verificar a precisão e a consistência.
+    Identifique quaisquer informações conflitantes, possíveis informações incorretas ou lacunas que precisem
+    ser abordadas. Sinalize as áreas que exigem revisão humana, se necessário.
+  expected_output: >
+    Principais tópicos do relatório de avaliação de qualidade com todas as informações originais que você obteve.
+    Inclua números que possamos usar para criar um gráfico, além de:
+    1) Fatos verificados versus informações questionáveis, 2) Resultados da verificação de consistência,
+    3) Classificações de confiabilidade da fonte, 4) Aprovação para geração do relatório final. Certifique-se de que este 
+    seja o mais completo possível para a geração do relatório final.
+  # Set the agent that will perform this task
+  agent: fact_checker
+  # Set the context for this task
+  context:
+  - research_main_topics
+
+
+# Define the task to validate secondary topics.
+validate_secondary_topics:
+  description: >
+    Analise todos os dados secundários coletados da pesquisa sobre o tema para verificar a precisão e
+    consistência. Identifique quaisquer informações conflitantes, possíveis informações incorretas ou
+    lacunas que precisem ser abordadas. Sinalize as áreas que requerem revisão humana, se necessário.
+  expected_output: >
+    Relatório de avaliação da qualidade dos tópicos secundários com todas as informações originais que você obteve.
+    Inclua números que possamos usar para criar o gráfico, além de:
+    1) Fatos verificados versus informações questionáveis, 2) Resultados da verificação de consistência,
+    3) Classificações de confiabilidade da fonte, 4) Aprovação para geração do relatório final. Certifique-se de que este
+    relatório seja o mais completo possível para a geração do relatório final.
+  # Set the agent that will perform this task
+  agent: fact_checker
+  # Set the context for this task
+  context:
+  - research_secondary_topics
+
+
+# Define the task to write the final report.
+write_final_report:
+  description: >
+    Crie um relatório abrangente que responda à consulta original "{user_query}"
+    usando todos os dados de pesquisa validados dos ramos temáticos PRINCIPAL e SECUNDÁRIO.
+    Estruture-o com seções claras, inclua citações e forneça insights acionáveis.
+    Use a ferramenta personalizada para criar gráficos intuitivos com base nas informações verificadas.
+    Inclua os gráficos gerados no relatório final. Qualquer gráfico deve ser carregado do caminho deep_research_crew/plots/,
+    então basta adicionar o nome do arquivo após isso.
+  expected_output: >
+    Um relatório final de pesquisa contendo: 1) Resumo executivo, 2) Resultados detalhados que respondem à consulta do usuário usando os tópicos principais, 3) Contexto de apoio de tópicos secundários, 4) Citações completas das fontes, 5) Principais conclusões e recomendações.
+    Deve incluir as seções de Resumo, Conclusões/Recomendações e OBRIGATORIAMENTE uma seção de '## Referências' com a lista de links utilizados.
+    Sempre que possível, inclua os gráficos dentro do relatório.
+  # Set the agent that will perform this task
+  agent: report_writer
+  # Set the context for this task
+  context:
+  - validate_main_topics
+  - validate_secondary_topics
+  

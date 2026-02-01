@@ -1,0 +1,44 @@
+create_research_plan:
+  description: Decompor a consulta de pesquisa "{user_query}" em tópicos específicos e perguntas-chave que precisam de investigação. 
+               Criar um plano de pesquisa focado.
+  expected_output: 'Um plano de pesquisa com: 
+                    1) Principais tópicos de pesquisa a serem investigados, 
+                    2) Perguntas-chave para cada tópico, 
+                    3) Critérios de sucesso para a pesquisa'
+
+
+
+gather_research_data:
+  description: Usando o plano de pesquisa, pesquise na internet e realize o web scraping de sites relevantes para coletar 
+               informações abrangentes sobre todos os tópicos identificados. 
+               Verifique as informações em múltiplas fontes e cite todas as fontes utilizadas.
+  expected_output: 'Dados de pesquisa abrangentes, incluindo: 
+                   1) Informações para cada tópico de pesquisa com citações,
+                   2) Fatos e estatísticas principais, 
+                   3) Múltiplas perspectivas de fontes, 4) Notas sobre a credibilidade das fontes'
+
+
+
+verify_information_quality:
+  description: Revisar todos os dados de pesquisa coletados quanto à precisão e consistência. 
+               Identificar qualquer informação conflitante, possível desinformação ou lacunas que precisem ser tratadas. 
+               Sinalizar áreas que exijam revisão humana, se necessário.
+  expected_output: 'Relatório de avaliação de qualidade com: 
+                    1) Todos os dados originais obtidos, 
+                    2) Fatos verificados vs. informações questionáveis, 
+                    3) Resultados da verificação de consistência, 
+                    4) Classificações de confiabilidade das fontes, 
+                    5) Aprovação para a geração do relatório final. 
+                    Certifique-se de que isso seja o mais abrangente possível para a geração do relatório final'
+
+
+
+write_final_report:
+  description: Criar um relatório abrangente que responda à consulta original "{user_query}" usando todos os 
+               dados de pesquisa verificados. Estruture-o com seções claras, inclua citações e forneça insights acionáveis.
+  expected_output: 'Um relatório final de pesquisa contendo: 
+                    1) Resumo executivo, 
+                    2) Descobertas detalhadas que respondem à consulta do usuário, 
+                    3) Evidências e análises de apoio, 
+                    4) Citações completas das fontes, 
+                    5) Principais insights e recomendações'

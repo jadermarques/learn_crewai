@@ -1,0 +1,46 @@
+# define a tarefa de criação do plano de pesquisa
+create_research_plan_task:
+  description: >
+    "Com base na consulta do usuário, divida-a em tópicos específicos e perguntas-chave, "
+    "e crie um plano de pesquisa focado."
+    "A consulta do usuário é: {user_query}"
+  expected_output: >
+    "Um plano de pesquisa com os principais tópicos de pesquisa a serem investigados, "
+    "perguntas-chave para cada tópico e critérios de sucesso para a pesquisa."    
+  agent: research_planner
+
+
+# define a tarefa de coleta de dados de pesquisa
+gather_research_data_task:
+  description: >
+        "Usando o plano de pesquisa, colete informações sobre todos os tópicos identificados. "
+        "Cite todas as fontes usadas."
+  expected_output: >
+        "Uma compilação detalhada das descobertas da pesquisa para cada tópico, "
+        "organizada por categoria, incluindo citações específicas, pontos de dados, "
+        "e URLs diretos/citações para cada fonte usada."
+  agent: researcher
+
+
+# define a tarefa de verificação da qualidade da informação
+verify_information_quality_task:
+  description: >
+        "Revise toda a pesquisa coletada. Identifique quaisquer informações conflitantes, "
+        "desinformação em potencial ou lacunas que precisem ser abordadas."
+  expected_output: >
+        "Um relatório de validação destacando fatos confirmados, sinalizando "
+        "inconsistências específicas ou fontes não confiáveis, e listando quaisquer lacunas de dados "
+        "que possam exigir investigação adicional."
+  agent: fact_checker
+
+
+# define a tarefa de redação do relatório final
+write_final_report_task:
+  description: >
+        "Crie um relatório abrangente que responda à consulta original usando todos os dados de pesquisa verificados. "
+        "Estruture-o com seções claras, inclua citações e forneça insights acionáveis."
+  expected_output: >
+        "Um relatório final totalmente polido e bem estruturado em formato markdown. "
+        "Ele deve incluir um resumo executivo, descobertas detalhadas organizadas por seção, "
+        "e uma lista de referências/citações."
+  agent: report_writer
