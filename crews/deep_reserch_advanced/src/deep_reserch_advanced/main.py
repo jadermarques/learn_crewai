@@ -16,29 +16,62 @@ import os
 # Substitua pelas entradas que você deseja testar; ele interpolará automaticamente
 # as informações de tarefas e agentes.
 
-USER_QUERY = "Como agentes de IA podem melhorar o planejamento urbano e a infraestrutura de cidades inteligentes?"
+USER_QUERY = "Qual o futuro dos agentes de IA?"
 
 
-# set the OpenAI model (gpt-4o-mini)
-# set the OpenAI model (gpt-4o-mini)
 os.environ["MODEL"] = "gpt-4o-mini"
-# set up the OpenAI API key 
-# os.environ["OPENAI_API_KEY"] = get_openai_api_key()
-# set the EXA API key
-# os.environ["EXA_API_KEY"] = get_exa_api_key()
+
 
 
 def run():
     """
     Run the crew.
     """
+    print("## Iniciando a execução da Crew...")
     # escreva sua consulta no valor "user_query"
     inputs = { 
         "user_query": USER_QUERY
     }
 
     try:
-        DeepReserchAdvanced().crew().kickoff(inputs=inputs)
+        crew_instance = DeepReserchAdvanced().crew()
+        print(f"## Objeto Crew criado. Agentes: {len(crew_instance.agents)}, Tarefas: {len(crew_instance.tasks)}")
+        result = crew_instance.kickoff(inputs=inputs)
+        print("########################\n## Resultado Final:\n########################\n")
+
+        # Exibe resultados
+        # Acessando a saída da crew
+        print(f"Raw Output: {result.raw}")
+        if result.json_dict:
+            print(f"JSON Output: {json.dumps(result.json_dict, indent=2)}")
+        if result.pydantic:
+            print(f"Pydantic Output: {result.pydantic}")
+        print(f"Tasks Output: {result.tasks_output}")
+        print(f"Token Usage: {result.token_usage}")        
+        print("########################\n## Resultado Final:\n########################\n")
+        print(crew_instance.usage_metrics)
+
+
+        # Salva o relatório final em um arquivo markdown local
+        try:
+            # Obtém o conteúdo do relatório final da saída da última tarefa
+            if hasattr(result, 'tasks_output') and result.tasks_output:
+                report_content = result.tasks_output[-1].raw
+            else:
+                report_content = str(result)
+            
+            filename = "research_report.md"
+            
+            # Salva no arquivo
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(report_content)
+            
+            print(f"Relatório salvo com sucesso em: {filename}")
+            
+        except Exception as e:
+            print(f"Erro ao salvar o relatório no arquivo: {str(e)}")
+
+        
     except Exception as e:
         raise RuntimeError(f"An error occurred while running the crew: {e}")
 
@@ -106,3 +139,6 @@ def run_with_trigger():
         return result
     except Exception as e:
         raise RuntimeError(f"An error occurred while running the crew with trigger: {e}")
+
+if __name__ == "__main__":
+    run()

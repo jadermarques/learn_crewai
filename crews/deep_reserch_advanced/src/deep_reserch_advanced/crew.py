@@ -83,8 +83,8 @@ class DeepReserchAdvanced():
         return Agent(
             config=self.agents_config['research_planner'], # type: ignore[index]
             verbose=True,
-            max_rpm=150,
-            max_iter=15            
+            max_rpm=30,
+            max_iter=5,        
         )
 
     @agent
@@ -93,8 +93,8 @@ class DeepReserchAdvanced():
             config=self.agents_config['internet_researcher'], # type: ignore[index]
             tools=[EXASearchTool(base_url=os.getenv("EXA_BASE_URL")), ScrapeWebsiteTool()],
             verbose=True,
-            max_rpm=150,
-            max_iter=15 
+            max_rpm=30,
+            max_iter=5 
         )
 
     @agent
@@ -103,8 +103,8 @@ class DeepReserchAdvanced():
             config=self.agents_config['fact_checker'], # type: ignore[index]
             tools=[EXASearchTool(base_url=os.getenv("EXA_BASE_URL")), ScrapeWebsiteTool()],
             verbose=True,
-            max_rpm=150,
-            max_iter=15            
+            max_rpm=30,
+            max_iter=5            
         )
 
     @agent
@@ -112,8 +112,8 @@ class DeepReserchAdvanced():
         return Agent(
             config=self.agents_config['report_writer'], # type: ignore[index]
             verbose=True,
-            max_rpm=150,
-            max_iter=15
+            max_rpm=30,
+            max_iter=5
         )
 
 
@@ -164,6 +164,9 @@ class DeepReserchAdvanced():
             process=Process.sequential,
             memory=True,# Ativamos a memória para permitir que os agentes retenham contexto
             verbose=True,
+            output_log_file="log_crew.txt",
+            cache=False, # Desativamos o cache para garantir que a nova pergunta seja processada
+            # stream=True, # Desativado pois altera o retorno para CrewStreamingOutput, que não tem atributo .raw
         )
 
 
